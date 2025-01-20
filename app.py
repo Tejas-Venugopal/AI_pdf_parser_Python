@@ -9,10 +9,17 @@ def summarize_text(text, max_length=130,min_length=30):
     return summary[0]['summary_text']
 
 def answer_question(question, context):
-    qa_pipeline = pipeline("question-answering",model="deepset/roberta-base-squad2")
-    # qa_pipeline = pipeline("question-answering")
-    result = qa_pipeline(question=question, context=context)
-    return result['answer']
+    try:
+        qa_pipeline = pipeline("question-answering",model="deepset/roberta-base-squad2")
+        if len(context) > 512:
+            # context = summarize_text(context)
+            raise ValueError("Context is too large for the model. Please summarize it first.")
+        # qa_pipeline = pipeline("question-answering")
+        result = qa_pipeline(question=question, context=context)
+        return result['answer']
+    except Exception as e:
+        print(f"Error in QA pipeline: {e}")
+        return "Could not generate an answer."
 
 def extract_text_from_pdf(pdf_path):
     reader = PdfReader(pdf_path)
@@ -34,15 +41,19 @@ if __name__ == "__main__":
     if file_path.endswith(".pdf"):
         extract_text = extract_text_from_pdf(file_path)
         summarize_text = summarize_text(extract_text)
+        print("\Original text:",extract_text)
         print("Summary:\n", summarize_text)
+        
     elif file_path.endswith(".docx"):
         extract_text = extract_text_from_docx(file_path)
         summarize_text = summarize_text(extract_text)
+        print("\Original text:",extract_text)
         print("Summary:\n", summarize_text)
     else:
         print("Unsupported file type!")
         
-    context = summarize_text
-    question = "What is Tejas's expertise?"
+    context = extract_text
+    question = "What projects has Tejas worked on?"
     answer = answer_question(context, question)
+    print("\nQuestion:",question)
     print("Answer:", answer)
