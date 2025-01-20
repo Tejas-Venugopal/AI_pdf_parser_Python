@@ -1,22 +1,32 @@
 from PyPDF2 import PdfReader
 from docx import Document
-from transformers import pipeline
+from transformers import pipeline, AutoTokenizer
 
-        
-def summarize_text(text, max_length=130,min_length=30):
-    summarizer = pipeline("summarization",model="facebook/bart-large-cnn")
-    summary = summarizer(text, max_length=max_length, min_length=min_length, do_sample=False)
-    return summary[0]['summary_text']
-
-def answer_question(question, context):
+def summarize_text(text, max_length = 300, min_length = 100):
     try:
-        qa_pipeline = pipeline("question-answering",model="deepset/roberta-base-squad2")
-        if len(context) > 512:
-            # context = summarize_text(context)
-            raise ValueError("Context is too large for the model. Please summarize it first.")
-        # qa_pipeline = pipeline("question-answering")
-        result = qa_pipeline(question=question, context=context)
+        summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
+        summary = summarizer(text, max_length=max_length, min_length=min_length, do_sample=False)
+        return summary[0]['summary_text']
+    except Exception as e:
+        print(f"Error in summarization pipeline: {e}")
+        return text
+
+def answer_question(context, question):
+    try:
+        qa_pipeline = pipeline("question-answering", model="deepset/roberta-base-squad2")
+        tokenizer = AutoTokenizer.from_pretrained("deepset/roberta-base-squad2")
+        tokens = tokenizer(context, truncation=False, return_tensors="pt")["input_ids"]
+        
+        # Skip summarization if context is within token limit
+        if tokens.size(1) > 512:
+            print("Context is too long. Summarizing it...")
+            context = summarize_text(context, max_length=300, min_length=100)
+            
+            
+        result = qa_pipeline(question=question, context=context, truncation=True)
         return result['answer']
+    
+    
     except Exception as e:
         print(f"Error in QA pipeline: {e}")
         return "Could not generate an answer."
@@ -40,20 +50,20 @@ if __name__ == "__main__":
     file_path = r"T:\Me\Tejas_resume_Android_developer.pdf"  # Change to your file path
     if file_path.endswith(".pdf"):
         extract_text = extract_text_from_pdf(file_path)
-        summarize_text = summarize_text(extract_text)
-        print("\Original text:",extract_text)
-        print("Summary:\n", summarize_text)
+        summary_text = summarize_text(extract_text, max_length=300, min_length=100)
+        print("Original text:\n", extract_text)
+        print("Summary:\n", summary_text)
         
     elif file_path.endswith(".docx"):
         extract_text = extract_text_from_docx(file_path)
-        summarize_text = summarize_text(extract_text)
-        print("\Original text:",extract_text)
-        print("Summary:\n", summarize_text)
+        summary_text = summarize_text(extract_text, max_length=300, min_length=100)
+        print("Original text:\n", extract_text)
+        print("Summary:\n", summary_text)
     else:
         print("Unsupported file type!")
-        
+    
     context = extract_text
     question = "What projects has Tejas worked on?"
     answer = answer_question(context, question)
-    print("\nQuestion:",question)
+    print("\nQuestion:", question)
     print("Answer:", answer)
