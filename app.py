@@ -55,21 +55,21 @@ if __name__ == "__main__":
     if file_path.endswith(".pdf"):
         extract_text = extract_text_from_pdf(file_path)
         summary_text = summarize_text(extract_text, max_length=300, min_length=100)
-        print("Original text:\n", extract_text)
-        print("Summary:\n", summary_text)
+        # print("Original text:\n", extract_text)
+        # print("Summary:\n", summary_text)
         
     elif file_path.endswith(".docx"):
         extract_text = extract_text_from_docx(file_path)
         summary_text = summarize_text(extract_text, max_length=300, min_length=100)
-        print("Original text:\n", extract_text)
-        print("Summary:\n", summary_text)
+        # print("Original text:\n", extract_text)
+        # print("Summary:\n", summary_text)
     else:
         print("Unsupported file type!")
         exit(1)
         
             
     context = extract_text
-    question = "List the project names Tejas has worked on?"
+    question = "what is tejas CGPA in Bachelor of Engineering?"
     answer = answer_question(context, question)
     print("\nQuestion:", question)
     print("Answer:", answer)
