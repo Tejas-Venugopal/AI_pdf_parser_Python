@@ -331,3 +331,41 @@ File Upload: Users can upload .pdf or .docx files.
 Text Extraction: Extracts the full content from the uploaded document.
 Summarization: Summarizes the document content for easier readability.
 Question Answering: Allows users to input questions based on the document's content and fetches answers.
+
+
+
+The line if len(tokens[0]) > 512: is used to check the length of the tokenized input text. Here's the reasoning:
+
+Tokenization in NLP:
+In natural language processing (NLP), when you pass text through a tokenizer (like in Hugging Face’s AutoTokenizer), the text is split into smaller pieces called "tokens."
+For instance, a sentence might be split into words, punctuation marks, or even subword units, depending on the tokenizer's model.
+Why 512 Tokens?
+Many pre-trained transformer models, such as BERT, RoBERTa, and other variants, have a maximum token length they can handle in a single pass. For example, BERT's maximum input token length is 512 tokens.
+If the input text exceeds this limit, the model cannot process it in one go. This is because transformers like BERT, RoBERTa, and others are designed with a fixed maximum input length.
+What’s Happening Here?
+tokens[0]: After tokenizing the context text, the result is a tensor of token IDs. Since you're passing the context to the tokenizer, tokens[0] refers to the first (and only) set of token IDs from the context.
+len(tokens[0]): This checks how many tokens are in the context.
+> 512: If the length of the tokenized context exceeds 512 tokens, it means that the model can't handle the entire input without truncation. To avoid errors or incomplete processing, the script triggers a summarization of the content to reduce the text length.
+In Summary:
+The check if len(tokens[0]) > 512: ensures that the text being passed to the model does not exceed the model's token limit (e.g., 512 tokens for many transformer models).
+If the token count exceeds this threshold, the script summarizes the text to bring it within the acceptable limit for the model, ensuring that the input is properly processed without errors.
+If you’re using a model that can handle more than 512 tokens (like Longformer or BigBird), you can adjust the threshold accordingly.
+
+Improve the question: Instead of asking "List the project he worked on," try asking a more specific question like, "What are the projects mentioned in the resume?" or "What are the names of the projects?"
+
+
+To try with a different model for question answering, you can simply replace the current model (deepset/roberta-base-squad2) with another one that fits your needs. Hugging Face offers a variety of models trained specifically for question answering tasks. Here are a few alternatives:
+
+distilbert-base-uncased-distilled-squad: A distilled version of BERT, which is faster and lighter but still performs well for question answering.
+bert-large-uncased-whole-word-masking-finetuned-squad: A larger BERT model that may provide more accurate results but is slower.
+facebook/bart-large-squad2: A BART model fine-tuned for question answering, offering strong performance for natural language understanding tasks.
+t5-base: A versatile transformer model that can handle a variety of tasks, including question answering.
+
+
+distilbert-base-uncased-distilled-squad
+Tejasvenugopal is an Android Application Developer with over a year of Android development experience. He led the development of an NLP-based Resume Parser project in Python. He also built a machine learning model in Python to predict earthquake magnitudes. He is a strongcommunicator and analytical thinker, 
+eager for new challenges and committed to professional growth. He has a Bachelor of Engineering - CSEGPA : 8.7 CGPAEDUCATION: 8.6. He lives in Bangalore, Karnataka, with his wife and two children. He currently works for VCNR Technologies, a Bangalore-based software company. He will be based in Bangalore until 
+he moves to New York in the summer of 2023. For more information, visit www.welldoc software pvt ltd and follow them on Twitter at @welldocsoftware and @tejasvenugsopal on Facebook. For confidential support on suicide matters call the Samaritans on 08457 90 90 90, visit a local Samaritans branch or click here for details.
+
+
+
