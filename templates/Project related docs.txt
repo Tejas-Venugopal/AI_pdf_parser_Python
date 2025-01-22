@@ -287,3 +287,39 @@ Question: will he be able to get a job in the tech industry?
 Answer: Android Application Developer
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+on 22 Jan 2024
+
+1. Input Handling
+Status: Already implemented using PyPDF2 for PDFs and python-docx for Word documents to extract text.
+Next: Ensure error handling for unsupported file types and add checks for empty documents.
+2. Summarization
+Status: You've implemented summarization using facebook/bart-large-cnn from the Hugging Face Transformers library.
+Next: Test with diverse document types to refine max_length and min_length for better results. Optionally, include a fallback summary (e.g., first few lines) if the model fails.
+3. Question Handling
+Status: Added functionality using the deepset/roberta-base-squad2 model for QA.
+Next:
+Enhance preprocessing to handle edge cases like long context or noisy data.
+Optionally highlight the document portion where the answer was derived.
+4. Answer Generation
+Status: Integrated with QA functionality to answer questions based on context.
+Next: Include dynamic summarization of long contexts before answering questions, which you've partially implemented.
+5. User Interface
+Status: Planning stage.
+Next:
+Decide on the framework: Streamlit (fast prototype) or Flask (customizable backend).
+Create input fields for file upload, summary viewing, and QA input.
+Display summaries and QA results dynamically.
+
+
