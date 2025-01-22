@@ -323,3 +323,11 @@ Create input fields for file upload, summary viewing, and QA input.
 Display summaries and QA results dynamically.
 
 
+Question: what is the name of the pdf
+Answer: Resume Parser
+
+Key Features in the Streamlit App:
+File Upload: Users can upload .pdf or .docx files.
+Text Extraction: Extracts the full content from the uploaded document.
+Summarization: Summarizes the document content for easier readability.
+Question Answering: Allows users to input questions based on the document's content and fetches answers.
