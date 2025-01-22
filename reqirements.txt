@@ -1,0 +1,38 @@
+Expectation 
+Answer: NLP-based resume parsers, earthquake prediction models, and online food delivery systems
+
+
+Actual Result 
+Question: What projects has Tejas worked on?
+Answer: NLP-based Resume Parser project in Python
+
+
+The issue lies in the summarization process. The summarizer seems to focus heavily on the most emphasized details in the text, possibly omitting or downplaying other projects. To address this and get a more complete answer, let's adjust the code and approach:
+
+Key Adjustments
+Disable Summarization for QA Input: Summarization might over-simplify the context, removing important details. For shorter contexts (like your resume), directly pass the original text to the QA pipeline.
+
+Use a More Context-Preserving Summarization: If summarization is necessary, increase the maximum length to retain all relevant details.
+
+Extract Multiple Answers: To ensure all projects are captured, extract answers iteratively using specific questions for each type of project.
+
+
+
+
+
+
+
+
+
+Question: What projects has Tejas worked on?
+Answer: NLP-based Resume Parser project in Python
+
+Question: what is the name of the person here.?
+Answer: Tejasvenugopal
+
+Summary for QA:
+ Tejasvenugopal is an Android Application Developer with over a year of Android development experience. He led the development of an NLP-based Resume Parser project in Python. He also built a machine learning model in Python to predict earthquake magnitudes. He is a strongcommunicator and analytical thinker, eager for new challenges and committed to professional growth. He has a Bachelor of Engineering - CSEGPA : 8.7 CGPAEDUCATION: 8.6. He lives in Bangalore, Karnataka, India.
+
+Question: List the project names Tejas has worked on?
+Answer: Resume Parser
+

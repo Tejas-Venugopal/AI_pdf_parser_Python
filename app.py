@@ -69,7 +69,7 @@ if __name__ == "__main__":
         
             
     context = extract_text
-    question = "what is tejas CGPA in Bachelor of Engineering?"
+    question = "what is the name of the pdf "  # Change to your question
     answer = answer_question(context, question)
     print("\nQuestion:", question)
     print("Answer:", answer)
